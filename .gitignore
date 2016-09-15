@@ -1,0 +1,12 @@
+# Ignore Emacs nastiness
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+#Ignore config file with keys
+config.py
