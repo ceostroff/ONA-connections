@@ -2,5 +2,6 @@
 
 ## Data Collection
 
-**Requirements:** python-twitter
+**Requirements:** `python-twitter`
+
 `$ pip install python-twitter`
