@@ -2,9 +2,10 @@
 
 ## Data Collection
 
-**Requirements:** `python-twitter`
+**Requirements:** `python-twitter`, `unicodecsv`
 
 `$ pip install python-twitter`
+`$ pip install unicodecsv`
 
 **Get started**
 
