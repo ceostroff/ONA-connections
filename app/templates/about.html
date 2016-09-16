@@ -1,42 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js" type="text/javascript"></script>
-	<script src="{{url_for('.static', filename='js/particles.min.js')}}" type="text/javascript"></script>
-	<script src="{{url_for('.static', filename='js/network.js')}}"></script>
+{% extends "index.html" %}
 
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700" rel="stylesheet"/>
-	<link type="text/css" rel="stylesheet" href="{{url_for('.static', filename='css/main.css')}}"/>
-    </head>
+{% block header %}
+<div id="network-header">
+    <div id="headline">
+  <h2>This app was made by the amazing <span class="pink">Charles Smart</span> and <span class="pink">Aaron Albright.</span></h2>
+  <h2><span class="purple">#ONA16Connect</h2>
+    </div>
 
-    <body>
-
-
-	<div id="particles">
-	</div>
-	<nav id="main-nav">
-      <a style="text-decoration: none;"href="{{ url_for('index') }}">
-	    <img src="{{url_for('.static', filename='img/ona_logo.png')}}"/>
-    </a>
-	    <div id="nav-text">
-		<a href="{{ url_for('index') }}">Home</a>
-		<a href="http://ona16.journalists.org">ONA16 Home</a>
-	    </div>
-	</nav>
-	<div id="network-header">
-	    <div id="headline">
-		<h2>This app was made by the amazing <span class="pink">Charles Smart</span> and <span class="pink">Aaron Albright.</span></h2>
-		<h2><span class="purple">#ONA16Connect</h2>
-	    </div>
-
-	</div>
-	<script>
-	    $(document).ready(function() {
-	    particlesJS.load('particles', "{{url_for('.static', filename='js/particlesjs.json')}}", function(){
-
-    });
-	    });
-	</script>
-    </body>
-</html>
+{% endblock %}
