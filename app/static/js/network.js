@@ -1,3 +1,5 @@
+var first;
+
 $(document).ready(function() {
 
     var data;
@@ -7,47 +9,68 @@ $(document).ready(function() {
 	searchInit();
     });
 
-    console.log(data);
-
     function searchInit() {
 	$('.twitter-submit').submit(function(e) {
 	    e.preventDefault();
 	    
 	    var twitterName = $(this).find('#username').val(),
 	        result;
-
-	    console.log(twitterName + '\n');
 	    
 	    if (twitterName[0] == '@') {
-		result = $.grep(data, function(e, i){
+		$.grep(data, function(e, i){
 		    if (e.username.toLowerCase() == twitterName.toLowerCase()) {
-			return data[i]['id'];
+			result = data[i]['id'];
 		    }
 		});
 	    } else {
-		result = $.grep(data, function(e, i){
+		$.grep(data, function(e, i){
 		    if (e.name.toLowerCase() == twitterName.toLowerCase()) {
-			return data[i]['id'];
+			retult = data[i]['id'];
 		    }
 		});
 	    }
 
-	    sendAjax(result);
+	    if (first == undefined) {
+		first = result;
+		getFirst(first);
+	    } else {
+		getSecond(first, result)
+	    }
 	});
     }
 });
 
-function sendAjax(id) {
+function getSecond(first, second) {
     $.ajax({
-	type: 'POST',
-	url: '/submit',
-	data: {"id": id},
-	datatype: "JSON",
+	type: 'GET',
+	url: '/submit-second/',
+	data: {
+	    "first": first,
+	    "second": second,
+	},
+	contentType: 'application/json',
+	datatype: 'json',
 	success: function(result) {
 	    console.log(result);
 	},
 	error: function(request, status, error) {
-	    console.log(status);
+	    console.log(request);
+	}
+    })
+}
+
+function getFirst(id) {
+    $.ajax({
+	type: 'GET',
+	url: '/submit-first/',
+	data: {"id": id},
+	contentType: 'application/json',
+	datatype: 'json',
+	success: function(result) {
+	    console.log(result);
+	},
+	error: function(request, status, error) {
+	    console.log(request);
 	}
     })
 }
