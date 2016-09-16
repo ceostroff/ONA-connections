@@ -10,3 +10,6 @@ tramp
 
 #Ignore config file with keys
 config.py
+
+#Ignore Aaron's silly env
+/site/env
