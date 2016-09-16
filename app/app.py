@@ -10,7 +10,7 @@ manager = Manager(app)
 
 with open('final_connections.json') as data_file:
     data = json.load(data_file)
-    
+
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
@@ -51,7 +51,7 @@ def get_neighbors(node):
 #             newpath = find_path(graph, node, end, path)
 #             if newpath: return newpath
 #     return None
-    
+
 def find_shortest_path(graph, start, end, path=[]):
     path = path + [start]
     if start == end:
@@ -60,22 +60,18 @@ def find_shortest_path(graph, start, end, path=[]):
         return None
     shortest = None
 
-
-    
     for node in graph[start]:
-        current_time = datetime.now()
-        print((current_time - start_time).total_seconds());
+        print('running')
         if node not in path:
             newpath = find_shortest_path(graph, node, end, path)
             if newpath:
                 if not shortest or len(newpath) < len(shortest):
                     shortest = newpath
-                if (current_time - start_time).total_seconds() > 10:
-                    return shortest
+    return shortest
 
-        
-            
-            
+
+
+
 
 
 if __name__ == '__main__':
