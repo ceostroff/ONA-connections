@@ -12,32 +12,24 @@
 
     <body>
 
+
 	<div id="particles">
 	</div>
 	<nav id="main-nav">
-    <a style="text-decoration: none;"href="{{ url_for('index') }}">
-    <img src="{{url_for('.static', filename='img/ona_logo.png')}}"/>
-  </a>
+      <a style="text-decoration: none;"href="{{ url_for('index') }}">
+	    <img src="{{url_for('.static', filename='img/ona_logo.png')}}"/>
+    </a>
 	    <div id="nav-text">
-		<a href="{{ url_for('about') }}">About</a>
-		<a href="http://ona16.journalists.org">ONA Home</a>
+		<a href="{{ url_for('index') }}">Home</a>
+		<a href="http://ona16.journalists.org">ONA16 Home</a>
 	    </div>
 	</nav>
 	<div id="network-header">
 	    <div id="headline">
-		<h2>Find your <span class="pink">network</span> and meet new <span class="pink">people.</span></h2>
+		<h2>This app was made by the amazing <span class="pink">Charles Smart</span> and <span class="pink">Aaron Albright.</span></h2>
 		<h2><span class="purple">#ONA16Connect</h2>
 	    </div>
-	    <p>Enter your Twitter name to get started.</p>
-	    <form class="twitter-submit">
-		<div class="text-input-main">
-		    <div class="text-input-wrap">
-			<input type="text" id="username" placeholder="@username" name="twitter-name"/>
-		    </div>
-		    <input type="submit" value="SUBMIT"/>
 
-		</div>
-	    </form>
 	</div>
 	<script>
 	    $(document).ready(function() {
