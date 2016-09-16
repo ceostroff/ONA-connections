@@ -1,7 +1,6 @@
 from config import *
 import twitter
 import unicodecsv as csv
-from datetime import datetime
 import time
 import json
 

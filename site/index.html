@@ -1,12 +1,40 @@
 <!DOCTYPE html>
 <html>
     <head>
-	<script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js" type="text/javascript"></script>
+	<script src="js/particles.min.js" type="text/javascript"></script>
+	<script src="js/network.js"></script>
 
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700" rel="stylesheet"/>
+	<link type="text/css" rel="stylesheet" href="css/main.css"/>
     </head>
 
     <body>
+	<div id="particles">
+	</div>
+	<nav id="main-nav">
+	    <img src="img/ona_logo.png"/>
+	    <div id="nav-text">
+		<a href="#">About</a>
+		<a href="#">ONA Home</a>
+	    </div>
+	</nav>
+	<div id="network-header">
+	    <div id="headline">
+		<h2>Find your <span class="pink">network</span> and meet new <span class="pink">people.</span></h2>
+		<h2><span class="purple">#ONA16Connect</h2>
+	    </div>
+	    <p>Enter your Twitter name to get started.</p>
+	    <form class="twitter-submit">
+		<div class="text-input-main">
+		    <div class="text-input-wrap">
+			<input type="text" placeholder="@username" name="twitter-name"/>
+		    </div>
+		    <input type="submit" value="SUBMIT"/>
+		    
+		</div>
+	    </form>
+	</div>
     </body>
 </html>
