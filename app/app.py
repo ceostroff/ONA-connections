@@ -1,10 +1,8 @@
 from flask import Flask, render_template, request, jsonify
-from flask_script import Manager
 import json
 from datetime import datetime
 
 app = Flask(__name__)
-manager = Manager(app)
 
 with open('final_connections.json') as data_file:
     data = json.load(data_file)
@@ -27,7 +25,7 @@ def submit_second():
 
     if type(path) is str:
         return jsonify(path)
-    
+
     connections = {}
 
     total_nodes = []
@@ -43,7 +41,7 @@ def submit_second():
                     total_edges.append([node, neighbor])
     except TypeError:
         return jsonify(path)
-    
+
     for node in get_neighbors(first):
         if not node in total_nodes:
             total_nodes.append(node)
@@ -56,10 +54,10 @@ def submit_second():
             total_edges.append([second, node])
 
     print total_nodes
-            
+
     d3_nodes = []
     d3_edges = []
-    
+
     for node in total_nodes:
         d3_nodes.append({'id': node})
 
@@ -82,22 +80,22 @@ def submit_first():
     if not neighbors == None:
         total_nodes = [id]
         total_edges = []
-        
+
         nodes = [{'id': id}]
         edges = []
-        
+
         for neighbor in neighbors:
             total_nodes.append(neighbor)
             nodes.append({'id': neighbor})
-        
+
         for neighbor in neighbors:
             edges.append({'source': total_nodes.index(id), 'target': total_nodes.index(neighbor)})
-        
+
         d3_return = {
             'nodes': nodes,
             'edges': edges
         }
-    
+
         return jsonify(d3_return);
     else:
         return "Uh oh! We couldn't find any friends for that user. It's probably our fault -- this tool was built in 48 hours and is still under construction. Bear with us!"
@@ -133,4 +131,4 @@ def bfs(graph, start, end):
 
 
 if __name__ == '__main__':
-    manager.run()
+    app.run()
