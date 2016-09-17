@@ -28,20 +28,81 @@ def submit_second():
 
     connections = {}
 
-    for node in path:
-        connections[node] = get_neighbors(node)
+    total_nodes = []
+    total_edges = []
 
-    return jsonify(connections)
+    for node in path:
+        if not node in total_nodes:
+            total_nodes.append(node)
+        neighbors = get_neighbors(node)
+        for neighbor in neighbors:
+            if neighbor in path:
+                total_edges.append([node, neighbor])
+
+    
+    
+    for node in get_neighbors(first):
+        if not node in total_nodes:
+            total_nodes.append(node)
+            total_edges.append([first, node])
+
+
+    for node in get_neighbors(second):
+        if not node in total_nodes:
+            total_nodes.append(node)
+            total_edges.append([second, node])
+
+    print total_nodes
+            
+    d3_nodes = []
+    d3_edges = []
+    
+    for node in total_nodes:
+        d3_nodes.append({'id': node})
+
+    for edge in total_edges:
+        d3_edges.append({'source': total_nodes.index(edge[0]), 'target': total_nodes.index(edge[1])})
+
+    d3_return = {
+        'nodes': d3_nodes,
+        'edges': d3_edges
+    }
+
+    return jsonify(d3_return)
 
 @app.route("/submit-first/", methods=["GET"])
 def submit_first():
     id = request.args.get('id')
     neighbors = get_neighbors(id)
-    return jsonify(neighbors);
+
+    if not neighbors == None:
+        total_nodes = [id]
+        total_edges = []
+        
+        nodes = [{'id': id}]
+        edges = []
+        
+        for neighbor in neighbors:
+            total_nodes.append(neighbor);
+            nodes.append({'id': neighbor})
+        
+        for neighbor in neighbors:
+            edges.append({'source': total_nodes.index(id), 'target': total_nodes.index(neighbor)})
+        
+        d3_return = {
+            'nodes': nodes,
+            'edges': edges
+        }
+    
+        return jsonify(d3_return);
+    else:
+        return "Uh oh! We couldn't find any friends for that user. It's probably our fault -- this tool was built in 48 hours and is still under construction. Bear with us!"
 
 def get_neighbors(node):
-    return data[node]
-
+    try:
+        return data[node]
+    except:
+        return None
 
 def bfs(graph, start, end):
     # maintain a queue of paths
