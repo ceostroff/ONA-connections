@@ -24,9 +24,14 @@ def submit_second():
     first = request.args.get('first')
     second = request.args.get('second')
 
-    path = find_path(data, first, second)
+    path = bfs(data, first, second)
 
-    return jsonify(path)
+    connections = {}
+
+    for node in path:
+        connections[node] = get_neighbors(node)
+
+    return jsonify(connections)
 
 @app.route("/submit-first/", methods=["GET"])
 def submit_first():
@@ -37,23 +42,26 @@ def submit_first():
 def get_neighbors(node):
     return data[node]
 
-def find_path(data, start, end):
 
-    q = []
-
-    q.append([start])
-    
-    while q:
+def bfs(graph, start, end):
+    # maintain a queue of paths
+    queue = []
+    # push the first path into the queue
+    queue.append([start])
+    while queue:
+        # get the first path from the queue
         path = queue.pop(0)
-
+        # get the last node from the path
         node = path[-1]
-        
+        # path found
         if node == end:
             return path
+        # enumerate all adjacent nodes, construct a new path and push it into the queue
+        for adjacent in graph.get(node, []):
+            new_path = list(path)
+            new_path.append(adjacent)
+            queue.append(new_path)
 
-        for adjacent in data.get(node, []):
-        
-
-
+            
 if __name__ == '__main__':
     manager.run()
