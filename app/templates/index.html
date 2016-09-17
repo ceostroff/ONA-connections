@@ -29,16 +29,18 @@
 		<h2>Find your <span class="pink">network</span> and meet new <span class="pink">people.</span></h2>
 		<h2><span class="purple">#ONA16Connect</h2>
 	    </div>
-	    <p>Enter your Twitter name to see your connections at the conference. Then, search for someone you'd like to connect with. We'll draw the closest path using your mutual connections.</p>
-	    <form class="twitter-submit">
-		<div class="text-input-main">
-		    <div class="text-input-wrap">
-			<input type="text" id="username" placeholder="@username" name="twitter-name"/>
+	    <div id="search_and-text">
+		<p>Enter your Twitter name to see your connections at the conference. Then, search for someone you'd like to connect with. We'll draw the closest path using your mutual connections.</p>
+		<form class="twitter-submit">
+		    <div class="text-input-main">
+			<div class="text-input-wrap">
+			    <input type="text" id="username" placeholder="@username" name="twitter-name"/>
+			</div>
+			<input type="submit" value="SUBMIT"/>
+			
 		    </div>
-		    <input type="submit" value="SUBMIT"/>
-
-		</div>
-	    </form>
+		</form>
+	    </div>
 	</div>
   {% endblock %}
 	<script>

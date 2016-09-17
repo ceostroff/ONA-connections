@@ -24,8 +24,7 @@ def submit_second():
     first = request.args.get('first')
     second = request.args.get('second')
 
-    start_time = datetime.now()
-    path = find_shortest_path(data, first, second)
+    path = find_path(data, first, second)
 
     return jsonify(path)
 
@@ -38,40 +37,22 @@ def submit_first():
 def get_neighbors(node):
     return data[node]
 
+def find_path(data, start, end):
 
-# def find_path(graph, start, end, path=[]):
-#     path = path + [start]
-#     if start == end:
-#         return path
-#     if not graph.has_key(start):
-#         return None
-#     for node in graph[start]:
-#         print('running')
-#         if node not in path:
-#             newpath = find_path(graph, node, end, path)
-#             if newpath: return newpath
-#     return None
+    q = []
 
-def find_shortest_path(graph, start, end, path=[]):
-    path = path + [start]
-    if start == end:
-        return path
-    if not graph.has_key(start):
-        return None
-    shortest = None
+    q.append([start])
+    
+    while q:
+        path = queue.pop(0)
 
-    for node in graph[start]:
-        print('running')
-        if node not in path:
-            newpath = find_shortest_path(graph, node, end, path)
-            if newpath:
-                if not shortest or len(newpath) < len(shortest):
-                    shortest = newpath
-    return shortest
+        node = path[-1]
+        
+        if node == end:
+            return path
 
-
-
-
+        for adjacent in data.get(node, []):
+        
 
 
 if __name__ == '__main__':

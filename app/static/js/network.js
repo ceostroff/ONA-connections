@@ -32,13 +32,20 @@ $(document).ready(function() {
 
 	    if (first == undefined) {
 		first = result;
+//		animateTitle();
 		getFirst(first);
 	    } else {
+		console.log('first: ', first)
+		console.log('second: ', result)
 		getSecond(first, result)
 	    }
 	});
     }
 });
+
+// function animateTitle() {
+    
+// }
 
 function getSecond(first, second) {
     $.ajax({
