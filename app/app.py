@@ -3,8 +3,6 @@ from flask_script import Manager
 import json
 from datetime import datetime
 
-start_time = None
-
 app = Flask(__name__)
 manager = Manager(app)
 
@@ -26,20 +24,25 @@ def submit_second():
 
     path = bfs(data, first, second)
 
+
+    if type(path) is str:
+        return jsonify(path)
+    
     connections = {}
 
     total_nodes = []
     total_edges = []
 
-    for node in path:
-        if not node in total_nodes:
-            total_nodes.append(node)
-        neighbors = get_neighbors(node)
-        for neighbor in neighbors:
-            if neighbor in path:
-                total_edges.append([node, neighbor])
-
-    
+    try:
+        for node in path:
+            if not node in total_nodes:
+                total_nodes.append(node)
+            neighbors = get_neighbors(node)
+            for neighbor in neighbors:
+                if neighbor in path:
+                    total_edges.append([node, neighbor])
+    except TypeError:
+        return jsonify(path)
     
     for node in get_neighbors(first):
         if not node in total_nodes:
@@ -64,6 +67,7 @@ def submit_second():
         d3_edges.append({'source': total_nodes.index(edge[0]), 'target': total_nodes.index(edge[1])})
 
     d3_return = {
+        'length': len(path),
         'nodes': d3_nodes,
         'edges': d3_edges
     }
@@ -83,7 +87,7 @@ def submit_first():
         edges = []
         
         for neighbor in neighbors:
-            total_nodes.append(neighbor);
+            total_nodes.append(neighbor)
             nodes.append({'id': neighbor})
         
         for neighbor in neighbors:
@@ -105,11 +109,15 @@ def get_neighbors(node):
         return None
 
 def bfs(graph, start, end):
+    start_time = datetime.now()
     # maintain a queue of paths
     queue = []
     # push the first path into the queue
     queue.append([start])
     while queue:
+        current_time = datetime.now()
+        if (current_time - start_time).total_seconds() > 10:
+            return 'Looks like that person is too far away for us to calculate a connection.'
         # get the first path from the queue
         path = queue.pop(0)
         # get the last node from the path

@@ -1,5 +1,7 @@
 var first,
-    second;
+    second,
+    names,
+    results;
 
 var graph,
     data,
@@ -15,59 +17,69 @@ $(document).ready(function() {
     });
 
     function searchInit() {
+	var search_data = data.map(function(d){return '@' + d['username']}).concat(data.map(function(d){return d['name']}));
+	
+	var engine = new Bloodhound({
+	    local: search_data,
+	    queryTokenizer: Bloodhound.tokenizers.whitespace,
+	    datumTokenizer: Bloodhound.tokenizers.whitespace
+	});
+	
+	$('#name-1, #name-2').typeahead({
+	    minLength: 2,
+	    highlight: true
+	},{
+	    name: 'my-dataset',
+	    source: engine
+	});
+	
 	$('.twitter-submit').submit(function(e) {
+	    $('#error').text('');
+	    $('#connection-text').text('');
 	    e.preventDefault();
 	    
-	    var twitterName = $(this).find('#username').val(),
-	        result;
+	    names = [$(this).find('#name-1').val(), $(this).find('#name-2').val()];
+	    results = [];
 
-	    $(this).find('#username').val('');
+	    console.log(names);
 
-	    if (first === undefined) {
-		$('#headline').fadeTo("fast", 0).slideUp(200);
-		$('#start-desc').animate({'opacity': 0}, 200, function() {
-		$(this).text('This is your conference network - the people you follow who follow you back. Enter someone else\'s Twitter name to find the shortest path to them.');
-		}).animate({'opacity': 1}, 200);
-
-		$('#particles').fadeTo('slow', 0, function() {
-		    $(this).css('display', 'none');
-		})
-	    }
-	    
-	    if (twitterName[0] == '@') {
-		for (var i = 0; i < data.length; i++) {
-		    console.log('submitted: ' + twitterName.toLowerCase() + ' database: ' + '@' + data[i]['username'].toLowerCase());
-		    if (twitterName.toLowerCase() === '@' + data[i]['username'].toLowerCase()) {
-
-			result = data[i]['id'];
-			break;
-		    }
-		} 
-	    } else {
-		for (var i = 0; i < data.length; i++) {
-		    if (twitterName.toLowerCase() === data[i]['name'].toLowerCase()) {
-			result = data[i]['id'];
-			break;
+	    for (var i = 0; i < names.length; i++) {
+		if (names[i][0] == '@') {
+		    for (var j = 0; j < data.length; j++) {
+			if (names[i].toLowerCase() === '@' + data[j]['username'].toLowerCase()) {
+			    
+			    results[i] = data[j]['id'];
+			    break;
+			}
+		    } 
+		} else {
+		    for (var j = 0; j < data.length; j++) {
+			if (names[i].toLowerCase() === data[j]['name'].toLowerCase()) {
+			    results[i] = data[j]['id'];
+			    break;
+			}
 		    }
 		}
 	    }
 
-	    console.log(result);
+	    first = results[0];
+	    second = results[1];
 
-	    if (first == undefined) {
-		first = result;
-		getFirst(first);
+	    console.log(results);
+
+	    if (results[0] === undefined) {
+		getFirst(results[1]);
+	    } else if (results[1] === undefined) {
+		getFirst(results[0]);
 	    } else {
-		second = result;
-		console.log('first: ', first)
-		console.log('second: ', result)
-		getSecond(first, result)
+		getSecond(results[0], results[1]);
 	    }
 	});
     }
 });
 
 function getSecond(first, second) {
+    $('#network').append('<h2 id="loading">Loading. This could take a minute.</h2>');
     $.ajax({
 	type: 'GET',
 	url: '/submit-second/',
@@ -78,8 +90,21 @@ function getSecond(first, second) {
 	contentType: 'application/json',
 	datatype: 'json',
 	success: function(result) {
-	    console.log(result);
-	    graph(result);
+
+	    $('#loading').remove();
+
+	    if (!result) {
+		$('#error').text("The app encountered an error. Try again with different names!");
+	    } else {
+		var distance = parseInt(result['length']) - 2;
+		if (distance == 1) {
+		    var num_logic = 'is <span class="pink">' + distance + '</span> person';
+		} else {
+		    var num_logic = 'are <span class="pink">' + distance + '</span> people';
+		}
+		$('#connections-info').html('There ' + num_logic + ' between <span class="purple">' + names[0] + '</span> and <span class="purple">' + names[1] + '.</span>');
+		graph(result);
+	    }
 	},
 	error: function(request, status, error) {
 	    console.log(request);
@@ -88,6 +113,7 @@ function getSecond(first, second) {
 }
 
 function getFirst(id) {
+    $('#network').append('<h2 id="loading">Loading. This could take a minute.</h2>');
     $.ajax({
 	type: 'GET',
 	url: '/submit-first/',
@@ -95,8 +121,19 @@ function getFirst(id) {
 	contentType: 'application/json',
 	datatype: 'json',
 	success: function(result) {
-	    console.log(result);
-	    graph(result);
+
+	    $('#loading').remove();
+	    
+	    if (typeof result === 'string') {
+		result = undefined;
+		$('#error').text(result);
+	    } else {
+		$('#particles').fadeTo('slow', 0, function() {
+		    $(this).css('display', 'none');
+		});
+		
+		graph(result);
+	    }
 	},
 	error: function(request, status, error) {
 	    console.log(request);
@@ -194,6 +231,7 @@ function d3_init() {
 		hideToolTip();
 	    });
 	node.exit().remove();
+
 	
 	force.start();
 	
@@ -216,14 +254,24 @@ function showToolTip(d) {
 
     console.log(details['0']);
 
-    $('#tooltip img').attr('src', details[0]['image']);
-    $('#tooltip-name h4').text(details[0]['name']);
-    $('#tooltip-name a').text(details[0]['username']);
-    $('#bio').text(details[0]['bio']);
+    if (details[0]) {
+		$('#tooltip img').css('display', 'block');
+	$('#tooltip img').attr('src', details[0]['image']);
+	$('#tooltip-name h4').text(details[0]['name']);
+	$('#tooltip-name a').text(details[0]['username']);
+	$('#bio').text(details[0]['bio']);
+    } else {
+	$('#tooltip img').css('display', 'none');
+	$('#tooltip-name h4').text('');
+	$('#tooltip-name a').text('');
+	$('#bio').text("Oh no! Something went wrong and we can't find information for that user. Sorry about that!");
+    }
+
     
     $('#tooltip').css('display', 'inline-block')
 	.css('left', function() {
-	    return x - $(this)[0].getBoundingClientRect().width / 2;
+	    console.log((x - $(this)[0].getBoundingClientRect().width / 2));
+	    return Math.max((x - $(this)[0].getBoundingClientRect().width / 2), 0);
 	})
 	.css('top', function() {
 	    return y - 15 - $(this)[0].getBoundingClientRect().height;

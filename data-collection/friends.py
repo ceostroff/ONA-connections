@@ -7,7 +7,7 @@ import json
 users = []
 
 # Get usernames from CSV
-with open('data/ids.csv', 'rb') as csv_in:
+with open('data/missing.csv', 'rb') as csv_in:
     for row in csv_in:
         users.append(row.rstrip())
 
@@ -34,9 +34,7 @@ connections = {}
 
 num_in_key = 0
             
-for index, user in enumerate(users[700:1500]):
-
-    
+for index, user in enumerate(users):
     
     connections[user] = []
     try:
@@ -45,8 +43,8 @@ for index, user in enumerate(users[700:1500]):
         print('Getting friends of user #' + str(index))
         
         for friend in user_friends:
-            if str(friend) in users:
-                connections[user].append(friend)
+            if str(friend).rstrip() in users:
+                connections[user].append([friend])
                 
     except twitter.error.TwitterError, e:
         print(e)
@@ -55,7 +53,7 @@ for index, user in enumerate(users[700:1500]):
     
     num_in_key += 1
 
-    with open('data/friends_2.json', 'w') as json_out:
+    with open('data/friends_3.json', 'w') as json_out:
         json.dump(connections, json_out)
 
     if (num_in_key > 13):

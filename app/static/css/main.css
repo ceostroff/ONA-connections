@@ -1,4 +1,5 @@
 * {
+    -webkit-appearance: none;
     margin: 0;
     padding: 0;
 }
@@ -85,27 +86,40 @@ p {
     color: #212121;
 }
 
-.text-input-main {
-    position: relative;
-    max-width: 450px;
+#loading {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+#connections-info {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+#about-header {
+    margin-bottom: 20px;
+}
+
+a {
+    color: #EE5383;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.username {
+    display: block;
+    box-sizing: border-box;
     height: 50px;
+    width: 500px;
     margin: auto;
     margin-top: 15px;
-}
-
-.text-input-wrap {
-    position: absolute;
-    left: 0;
-    right: 110px;
-    height: 100%;
-    
-}
-
-.text-input-main input[type="text"] {
-    box-sizing: border-box;
-    height: 100%;
-    width: 100%;
-    border-radius: 3px 0 0 3px;
+    border-radius: 3px;
     border: none;
     outline: none;
     font-size: 16px;
@@ -114,14 +128,20 @@ p {
     background-color: #EEEEEE;
 }
 
-.text-input-main input[type="submit"] {
-    position: absolute;
+#error {
+    color: #EE5383;
+    font-weight: bold;
+}
+
+#submit {
     height: 100%;
-    width: 110px;
-    right: 0;
-    top: 0;
+    max-width: 300px;
+    width: 100%;
+    height: 50px;
+    margin: auto;
+    margin-top: 15px;
     background-color: #EE5383;
-    border-radius: 0 3px 3px 0;
+    border-radius: 3px;
     border: none;
     color: white;
     cursor: pointer;
@@ -150,10 +170,13 @@ p {
 #tooltip img {
     width: 60px;
     height: 60px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }
 
 #tooltip-text {
-    margin-left: 15px;
+    margin-left: 70px;
     float: right;
 }
 
@@ -171,4 +194,35 @@ p {
 #tooltip-text a:hover {
     text-decoration: underline;
 }
+
+.tt-hint {
+    color: #999;
+}
+
+.tt-menu { /* UPDATE: newer versions use tt-menu instead of tt-dropdown-menu */
+    width: 500px;
+    margin-top: 12px;
+    padding: 8px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    text-align: left;
+}
+
+.tt-suggestion {
+    padding: 3px 20px;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.tt-suggestion.tt-cursor { /* UPDATE: newer versions use .tt-suggestion.tt-cursor */
+    color: #fff;
+    background-color:  #EE5383;
+
+}
+
+.tt-suggestion p {
+    margin: 0;
+}
+
 
