@@ -49,6 +49,7 @@ for index, user in enumerate(users):
         bio = user_details.description
 
         writer.writerow([user, image, name, screen_name, url, bio])
+
     except twitter.error.TwitterError, e:
         print('\nERROR\n')
         pass
