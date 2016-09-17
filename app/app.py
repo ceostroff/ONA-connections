@@ -25,7 +25,7 @@ def submit_second():
     second = request.args.get('second')
 
     start_time = datetime.now()
-    path = find_shortest_path(data, first, second)
+    path = bfs(data, first, second)
 
     return jsonify(path)
 
@@ -38,39 +38,24 @@ def submit_first():
 def get_neighbors(node):
     return data[node]
 
-
-# def find_path(graph, start, end, path=[]):
-#     path = path + [start]
-#     if start == end:
-#         return path
-#     if not graph.has_key(start):
-#         return None
-#     for node in graph[start]:
-#         print('running')
-#         if node not in path:
-#             newpath = find_path(graph, node, end, path)
-#             if newpath: return newpath
-#     return None
-
-def find_shortest_path(graph, start, end, path=[]):
-    path = path + [start]
-    if start == end:
-        return path
-    if not graph.has_key(start):
-        return None
-    shortest = None
-
-    for node in graph[start]:
-        print('running')
-        if node not in path:
-            newpath = find_shortest_path(graph, node, end, path)
-            if newpath:
-                if not shortest or len(newpath) < len(shortest):
-                    shortest = newpath
-    return shortest
-
-
-
+def bfs(graph, start, end):
+    # maintain a queue of paths
+    queue = []
+    # push the first path into the queue
+    queue.append([start])
+    while queue:
+        # get the first path from the queue
+        path = queue.pop(0)
+        # get the last node from the path
+        node = path[-1]
+        # path found
+        if node == end:
+            return path
+        # enumerate all adjacent nodes, construct a new path and push it into the queue
+        for adjacent in graph.get(node, []):
+            new_path = list(path)
+            new_path.append(adjacent)
+            queue.append(new_path)
 
 
 
