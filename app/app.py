@@ -62,6 +62,6 @@ def bfs(graph, start, end):
             new_path.append(adjacent)
             queue.append(new_path)
 
-            
+
 if __name__ == '__main__':
     manager.run()
