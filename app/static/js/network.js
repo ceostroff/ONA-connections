@@ -15,6 +15,15 @@ $(document).ready(function() {
 	    
 	    var twitterName = $(this).find('#username').val(),
 	        result;
+
+	    $(this).find('#username').val('');
+
+	    $('#headline').fadeTo("fast", 0).slideUp(200);
+	    $('#start-desc').animate({'opacity': 0}, 200, function() {
+		$(this).text('This is your conference network - the people you follow who follow you back. Enter someone else\'s Twitter name to find the shortest path to them.');
+	    }).animate({'opacity': 1}, 200);
+
+	    
 	    
 	    if (twitterName[0] == '@') {
 		$.grep(data, function(e, i){
@@ -42,10 +51,6 @@ $(document).ready(function() {
 	});
     }
 });
-
-// function animateTitle() {
-    
-// }
 
 function getSecond(first, second) {
     $.ajax({
@@ -80,4 +85,20 @@ function getFirst(id) {
 	    console.log(request);
 	}
     })
+}
+
+function d3_init() {
+    var width = window.innerWidth,
+	height = 900;
+
+    var nodes = [],
+	links = [];
+
+    var force = d3.layout.force()
+	.nodes(nodes)
+	.links(links)
+	.charge(-400)
+	.linkDistance(120)
+	.size([width, height])
+	.on('tick', tick);
 }
